@@ -1,10 +1,6 @@
 from machine import Pin
 import time
-
-button = Pin(0, Pin.IN, Pin.PULL_UP)
-#camera = Pin(1, Pin.IN, Pin.PULL_DOWN)
-relay = Pin(1, Pin.OUT)
-
+ 
 M1A = 21 # GP21
 M1B = 20 # GP20
 
@@ -25,6 +21,9 @@ n[7] = [0,1,1,0]
  
 en1 = Pin(17, Pin.OUT)
 en2 = Pin(16, Pin.OUT)
+
+en1(1)  # motor 1 enable, set value 0 to disable
+en2(1)  # motor 2 enable, set value 0 to disable
 
 m1a = Pin(M1A,Pin.OUT)
 m1b = Pin(M1B,Pin.OUT) 
@@ -51,33 +50,19 @@ def Backward(delay, steps):
         for j in reversed(range(step_count)):
             setStep(n[j][0], n[j][1], n[j][2], n[j][3])
             time.sleep(delay)
-def photo():
-    print("Take a photo")
-    relay.value(0)
-    time.sleep(0.1)
-    relay.value(1)
-    
-motor = False
+ 
 
-while True:
-    rotation = 0
-    if not button.value():
-        print("Button Pressed")
-        print(rotation)
-        if motor is False:
-            en1(1)
-            en2(1)
-            motor = True
-        while rotation in range(0,49):
-            rotation += 1
-            photo()
-            time.sleep(1)
-            print(rotation)
-            Forward(0.05,1)
-            time.sleep(0.5)
+while 1:
+    #delay = int(input("Time Delay = ")) # write Time delay is in millisecond
+    #steps = int(input("Forward steps = ")) # Write how many Forward steps
+    #Forward(delay / 1000.0,steps)
     
-    if motor is True:
-        en1(0)
-        en2(0)
-        motor = False
-
+    #steps = int(input("Backward steps = ")) # Write how many backward steps
+    #Backward(delay/ 1000.0,steps)
+    
+    delay = 10 # write Time delay is in millisecond
+    steps = 10 # Write how many Forward steps
+    Forward(delay / 1000.0,steps)
+    
+    steps = 10 # Write how many backward steps
+    Backward(delay/ 1000.0,steps)
